@@ -29,7 +29,7 @@ export default function TiltCard({
   target,
   rel,
 }: TiltCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<any>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
 
@@ -40,7 +40,7 @@ export default function TiltCard({
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [7, -7]), springConfig);
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-7, 7]), springConfig);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -51,7 +51,7 @@ export default function TiltCard({
     mouseY.set(y / rect.height - 0.5);
   }, [mouseX, mouseY]);
 
-  const MotionComponent = motion[as as "div"];
+  const MotionComponent = (as === "a" ? motion.a : motion.div) as any;
 
   return (
     <MotionComponent
